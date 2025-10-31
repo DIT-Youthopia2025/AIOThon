@@ -61,21 +61,18 @@ const Countdown = () => {
             About Hackathon
           </h2>
           <p className="text-gray-300 leading-relaxed uppercase">
-            AIOTHON Hackathon 2025 is a 24-hour innovation marathon where
-            students from across the country come together to build, code, and
-            invent. This year's theme is <b>AI and IoT</b> — the perfect
-            combination for a smarter world!
+            AIOTHON HACKATHON 2025 IS A 24-HOUR INVENTION MARATHON WHERE STUDENTS FROM ACROSS COUNTRY WILL COME TOGETHER TO BUILD, CODE, AND INNOVATE. THIS YEAR'S THEME IS<b>"AI and IoT COMBINATION FOR A SMARTER WORLD".</b>
           </p>
         </section>
 
         {}
         <div className="flex flex-wrap justify-center gap-6">
           {[
-            { title: "BUILD", desc: "Create apps that solve real problems." },
-            { title: "LEARN", desc: "Join workshops and upskill yourself." },
+            { title: "BUILD", desc: "CREATE A WEB OR MOBILE APPLICATION . A HARDWARE PROJECT OR A CREATIVE SOLUTION THAT ADDRESSES A CORE PROBLEM." },
+            { title: "LEARN", desc: "ATTEND WORKSHOPS LED BY INDUSTRY EXPERTS AND GET MENTORSHIP TO LEVEL UP YOUR SKILLS." },
             {
               title: "CONNECT",
-              desc: "Network with peers, mentors, and recruiters.",
+              desc: "NETWORK WITH PEER, MEET RECRUITERS AND CONNECT WIT TOP TECH COMPANIES.",
             },
           ].map((card) => (
             <div

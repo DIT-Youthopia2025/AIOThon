@@ -1,5 +1,4 @@
 import GooeyNav from './components/GooeyNav'; 
-
 function App() {
   const navItems = [
     { label: 'Home', href: '#home' },
