@@ -134,10 +134,7 @@ const GooeyNav = ({
 
   return (
     <>
-      {/* This complex animation relies heavily on filters, custom keyframes, and 
-        CSS variables, which is why inline <style> is used here. 
-        We also define the color variables used by the particle logic.
-      */}
+      
       <style>
         {`
           :root {
