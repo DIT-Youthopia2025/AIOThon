@@ -331,7 +331,7 @@ export default function App() {
   ];
 
   return (
-    <div className="min-h-screen w-full bg-black text-amber-100 p-8 sm:p-10 font-[Inter]">
+    <div className="min-h-10 w-full bg-black  text-amber-100 p-8 sm:p-10 font-[Inter]">
       
 
       <header className="flex justify-between items-start w-full mt-[10px]">

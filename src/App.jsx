@@ -1,4 +1,6 @@
-import GooeyNav from './components/GooeyNav'; 
+import GooeyNav from './components/GooeyNav';
+
+
 function App() {
   const navItems = [
     { label: 'Home', href: '#home' },
@@ -10,7 +12,7 @@ function App() {
   return (
     <>
     <div
-      className="absolute inset-0 -z-10 bg-cover bg-center"
+      className="relative inset-0  bg-cover bg-center"
       style={{ backgroundImage: "url('/assets/background.png')" }}
     />
     <div className="flex justify-center w-full ">
@@ -19,6 +21,10 @@ function App() {
         initialActiveIndex={0} 
       />
     </div>
+    <div className="min-h-screen bg-[#0b0b3b] flex flex-col items-center justify-center">
+      
+    </div>
+    
     </>
   );
 }
