@@ -1,4 +1,8 @@
 import { useRef, useEffect, useState } from 'react';
+import {Link, NavLink} from "react-router-dom";
+// GooeyNav component remains the same for its core logic, 
+// only internal CSS is modified slightly for responsiveness.
+
 const GooeyNav = ({
   items,
   animationTime = 600,
@@ -84,26 +88,47 @@ const GooeyNav = ({
     textRef.current.innerText = element.innerText;
   };
   const handleClick = (e, index) => {
-    e.preventDefault(); // Prevent default link behavior
-    const liEl = e.currentTarget.parentElement;
-    if (activeIndex === index) return;
-    setActiveIndex(index);
-    updateEffectPosition(liEl);
-    if (filterRef.current) {
-      // Clean up existing particles before creating new ones
-      const particles = filterRef.current.querySelectorAll('.particle');
-      particles.forEach(p => filterRef.current.removeChild(p));
-    }
-    if (textRef.current) {
-      // Trigger text animation reset
-      textRef.current.classList.remove('active');
-      void textRef.current.offsetWidth;
-      textRef.current.classList.add('active');
-    }
-    if (filterRef.current) {
-      makeParticles(filterRef.current);
-    }
-  };
+  e.preventDefault(); // Keep this to prevent default scroll *before* the animation
+  
+  const liEl = e.currentTarget.parentElement;
+  if (activeIndex === index) return;
+  
+  // Get the href from the clicked item
+  const targetHref = items[index].href; 
+
+  setActiveIndex(index);
+  updateEffectPosition(liEl);
+  
+  if (filterRef.current) {
+    // ... animation logic (no change) ...
+    const particles = filterRef.current.querySelectorAll('.particle');
+    particles.forEach(p => filterRef.current.removeChild(p));
+  }
+  if (textRef.current) {
+    // ... animation logic (no change) ...
+    textRef.current.classList.remove('active');
+    void textRef.current.offsetWidth;
+    textRef.current.classList.add('active');
+  }
+  if (filterRef.current) {
+    makeParticles(filterRef.current);
+  }
+
+  // 👇 ADD THIS SCROLL LOGIC AFTER ANIMATION IS TRIGGERED 👇
+  if (targetHref && targetHref.startsWith('#')) {
+    // We use a small delay to let the animation start before scrolling
+    // Alternatively, you could use window.location.hash = targetHref;
+    setTimeout(() => {
+      const targetElement = document.querySelector(targetHref);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        // Fallback for general hash change
+        window.location.hash = targetHref;
+      }
+    }, 50); // A short delay (50ms)
+  }
+};
   const handleKeyDown = (e, index) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -134,7 +159,7 @@ const GooeyNav = ({
 
   return (
     <>
-      
+      {/* 1. Add responsive adjustments to internal CSS */}
       <style>
         {`
           :root {
@@ -283,13 +308,24 @@ const GooeyNav = ({
             z-index: -1;
           }
           
+          /* Responsive: Change font size on small screens */
+          @media (max-width: 640px) { /* Tailwind's default 'sm' breakpoint */
+            .nav-item-li {
+              font-size: 0.875rem; /* text-sm equivalent */
+            }
+            .effect.text {
+              font-size: 0.75rem; /* text-xs equivalent for smaller space */
+            }
+          }
+          
         `}
       </style>
       <div className="relative" ref={containerRef}>
         <nav className="flex relative" style={{ transform: 'translate3d(0,0,0.01px)' }}>
           <ul
             ref={navRef}
-            className="flex gap-4 list-none p-0 px-4 m-0 relative z-[3] text-sm"
+            // 2. Adjust ul spacing/padding for smaller screens
+            className="flex gap-2 sm:gap-4 list-none p-0 px-2 sm:px-4 m-0 relative z-[3] text-sm"
           >
             {items.map((item, index) => (
               <li
@@ -302,7 +338,8 @@ const GooeyNav = ({
                   onClick={e => handleClick(e, index)}
                   href={item.href}
                   onKeyDown={e => handleKeyDown(e, index)}
-                  className="outline-none py-[0.6em] px-[1em] inline-block focus:ring-2 focus:ring-white/50 rounded-full"
+                  // 3. Adjust padding for smaller screens
+                  className="outline-none py-[0.5em] px-[0.7em] sm:py-[0.6em] sm:px-[1em] inline-block focus:ring-2 focus:ring-white/50 rounded-full"
                 >
                   {item.label}
                 </a>
@@ -328,38 +365,38 @@ export default function App() {
   ];
 
   return (
-    <div className="min-h-10 w-full bg-black  text-amber-100 p-8 sm:p-10 font-[Inter]">
-      
+    <div className="w-full text-black p-4 sm:p-8 font-[Inter]">
+      {/* 4. Implement a responsive header layout */}
+      <header className="flex flex-col sm:flex-row justify-between items-center sm:items-start w-full mt-[10px] space-y-4 sm:space-y-0">
 
-      <header className="flex justify-between items-start w-full mt-[10px]">
-
-        <div className="flex items-center sm:space-x-2">
+        <div className="flex items-center space-x-1 sm:space-x-2">
+          {/* 5. Adjust logo size for mobile */}
           <img 
             src="/ieee-logo.svg"
-            width={150} 
+            width={120} // Smaller size for mobile
             alt="Hackathon Logo" 
-            className="rounded-lg shadow-xl"
+            className="rounded-lg shadow-xl sm:w-[150px]" // Restore larger size on 'sm' breakpoint
           />
           <span className="hidden sm:block text-xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-500">
             X
           </span>
-          <img src="/DITU.png" alt="" />
+          {/* Assuming DITU.png exists and needs a small size */}
+          <img src="/DITU.png" alt="DITU Logo" width={100} className="sm:w-auto" /> 
         </div>
 
-        <nav className="shrink-0 mt-5 ">
+        {/* 6. Ensure nav container aligns correctly */}
+        <nav className="shrink-0 mt-0 sm:mt-5 ">
           <GooeyNav
             items={items}
             initialActiveIndex={0}
             animationTime={600}
             timeVariance={300}
-            
-            colors={[1, 2, 3, 1, 2, 3, 1, 4]} 
+            colors={[1, 2, 3, 1, 2, 3, 1, 4]}
+
+
           />
         </nav>
-        
       </header>
-
-
     </div>
   );
 }
