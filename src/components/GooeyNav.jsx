@@ -126,7 +126,7 @@ const GooeyNav = ({
         // Fallback for general hash change
         window.location.hash = targetHref;
       }
-    }, 50); // A short delay (50ms)
+    }, 300); // A short delay (50ms)
   }
 };
   const handleKeyDown = (e, index) => {
